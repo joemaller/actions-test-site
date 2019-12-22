@@ -18,6 +18,6 @@ jobs:
 #       run: npm version
 
     - name: try building
-      uses: ideasonpurpose/docker-build
+      uses: ideasonpurpose/docker-build@master
       with: 
         args: npm run build
