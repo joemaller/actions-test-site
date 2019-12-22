@@ -58,9 +58,10 @@ jobs:
 
       - name: Docker?
         run: |
-          env
           which jq
           sudo ls -la /var/lib/docker
+          sudo ls -la /var/lib/docker/image
+          sudo ls -la /var/lib/docker/containers
 
       - name: try building
         run: sudo npm run build
