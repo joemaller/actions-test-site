@@ -1,0 +1,87 @@
+version: "3.7"
+
+# Note about devserver-proxy-token--d939bef2a41c4aa154ddb8db903ce19fff338b61
+# Since the proxy will be rewriting everytihng and replacing the default hostname,
+# we needed a unique value to search for. I couldn't find a way to access a
+# hash ID from the docker-compose file, so we're using this pseudo-unique
+# identifier instead.
+
+# Docker also appears to normalize hostnames to lowercase, and fails silently when trying to
+# access mixed-case domains.
+#
+# TODO: pull something from the environment (somehow?) to make this more unique
+
+services:
+  db:
+    image: mysql:5.7
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./_db:/docker-entrypoint-initdb.d/
+      - ./_log/mysql:/var/log/mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+
+  wordpress:
+    depends_on:
+      - db
+    image: ideasonpurpose/wordpress
+    restart: always
+    volumes:
+      - wp_data:/var/www/html
+      - ./wp-content/themes/${NAME:-ioptheme}:/var/www/html/wp-content/themes/${NAME:-ioptheme}
+      - ./wp-content/plugins:/var/www/html/wp-content/plugins
+      - ./wp-content/uploads:/var/www/html/wp-content/uploads
+      - ./_log/apache2:/var/log/apache2
+      - ./_log/wordpress:/var/log/wordpress
+      - ./_profiler:/tmp/xdebug_profiler
+
+    # Apache will throw errors for any ulimit value below 8192
+    # NOTE THAT THIS MIGHT BE MORE THAN THE SYSTEM OFFERS
+    ulimits:
+      nofile: 8192
+
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+
+      WORDPRESS_ACTIVE_THEME: ${NAME:-ioptheme}
+
+      WORDPRESS_DEBUG: 1
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_HOME', 'http://devserver-proxy-token--d939bef2a41c4aa154ddb8db903ce19fff338b61');
+        define('WP_SITEURL', 'http://devserver-proxy-token--d939bef2a41c4aa154ddb8db903ce19fff338b61');
+
+    networks:
+      default:
+        aliases:
+          # TODO: Replace this with an environment variable, dotenv? also WORDPRESS_CONFIG_EXTRA
+          - devserver-proxy-token--d939bef2a41c4aa154ddb8db903ce19fff338b61
+
+  tools:
+    image: ideasonpurpose/docker-build
+    user: "1000" # www-data
+    depends_on:
+      - wordpress
+    ports:
+      - "8080:8080"
+      # - "3000:3000"
+      # - "3001:3001"
+    volumes:
+      - ./:/usr/src/site/
+    entrypoint: npm run
+    command: start
+
+volumes:
+  db_data:
+    name: ${NAME:-ioptheme}_db_data
+  wp_data:
+    name: ${NAME:-ioptheme}_wp_data
