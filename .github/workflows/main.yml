@@ -40,20 +40,26 @@ jobs:
         run: |
           npm run composer
 
-      - name: working dir stuff
+      - name: set permissions so build can create directories
         run: |
-          echo $RUN_DATE
-          whoami
-          id
-          pwd
-          ls -la .
-          ls -la wp-content/themes/action-test/
           chmod 0777 .
           chmod 0777  wp-content/themes/action-test/
-          ls -la .
-          ls -la wp-content/themes/action-test/
-      #            chmod 0777 wp-content/themes/action-test/
-      #           ls -la wp-content/themes/action-test/
+
+      # echo $RUN_DATE
+      # whoami
+      # id
+      # pwd
+      # ls -la .
+      # ls -la wp-content/themes/action-test/
+      # chmod 0777 .
+      # chmod 0777  wp-content/themes/action-test/
+      # ls -la .
+      # ls -la wp-content/themes/action-test/
+
+      - name: Docker?
+        run: |
+          which jq
+          ls -la /var/lib/docker
 
       - name: try building
         run: sudo npm run build
