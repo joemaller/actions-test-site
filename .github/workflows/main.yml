@@ -19,4 +19,5 @@ jobs:
 
     - name: try building
       uses: ideasonpurpose/docker-build
-      run: npm run build
+      with: 
+        args: npm run build
