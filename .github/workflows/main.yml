@@ -9,15 +9,12 @@ jobs:
 
     steps:
       - name: Set date env var
-        run: echo "::set-env name=run_date::$(date "+%Y%m%dT%H%M")"
+        run: echo "::set-env name=RUN_DATE::$(date "+%Y%m%dT%H%M")"
 
-          
       - name: Checkout
         uses: actions/checkout@master
-      
 
-      - name: docker-compose version
-        run: docker-compose --version
+    
       - name: npm install cache
         id: npm-install
         uses: actions/cache@v1
@@ -29,13 +26,22 @@ jobs:
         if: steps.npm-install.outputs.cache-hit != true
         run: | 
           npm install
+      
+      - name: Composer Install cache
+        id: composer-install
+        uses: actions/cache@v1
+        with: 
+          path: wp-content/themes/action-test/vendor   # TODO: This should not be hard-coded, get the slug
+          key: ${{ runner.os }}-vendor
         
       - name: Composer install
+        if: steps.composer-install.outputs.cache-hit != true
         run: |
           npm run composer
 
       - name: working dir stuff
         run: | 
+          echo $RUN_DATE
          whoami
          id
          pwd
