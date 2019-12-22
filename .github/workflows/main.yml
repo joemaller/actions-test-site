@@ -35,8 +35,8 @@ jobs:
     - name: env?
       run: env
   
-#     - name: try building
-#       run: npm run build
+    - name: try building
+      run: sudo npm run build
       
 #       uses: ideasonpurpose/docker-build@master
 #       with: 
