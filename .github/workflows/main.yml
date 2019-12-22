@@ -1,4 +1,4 @@
-name: CI
+name: Builder
 
 on: [push]
 
@@ -14,8 +14,9 @@ jobs:
     - name: Run a one-line script
       run: echo Hello, world! $(date "+%H:%M:%S")
 
-    - name: Try npm
-      run: npm version
+#     - name: Try npm
+#       run: npm version
 
-    - name: try Docker
-      uses: docker://hello-world
+    - name: try building
+      uses: ideasonpurpose/docker-build
+      run: npm run build
