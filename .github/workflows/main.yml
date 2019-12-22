@@ -17,15 +17,17 @@ jobs:
     - name: docker-compose version
       run: docker-compose --version
     
-    - name: Install stuff
-      run: | 
-        npm install
-        npm run composer
+#     - name: Install stuff
+#       run: | 
+#         npm install
+#         npm run composer
 
-    - name: user?
+    - name: working dir
+      
       run: | 
         whoami
         pwd
+        ls -la
   
     - name: sudo user?
       run: |
