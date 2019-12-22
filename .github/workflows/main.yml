@@ -16,18 +16,31 @@ jobs:
 
     - name: docker-compose version
       run: docker-compose --version
+    - name: npm install cache
+      id: npm-install
+      uses: actions/cache@v1
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node_modules
     
-    - name: Install stuff
+    - name: npm install
+      if: steps.npm-install.outputs.cache-hit != true
       run: | 
         npm install
+        
+    - name: Composer install
+      run: |
         npm run composer
 
     - name: working dir stuff
       run: | 
         whoami
+        id
         pwd
         ls -la wp-content/themes/action-test/
-        chmod 0777 wp-content/themes/action-test/
+        chmod g+w wp-content/themes/action-test/
+        chmod g+w .
+        ls -la .
         ls -la wp-content/themes/action-test/
   
   
