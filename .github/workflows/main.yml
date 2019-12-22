@@ -17,7 +17,9 @@ jobs:
     - name: docker-compose version
       run: docker-compose --version
 
-#     - name: try building
+    - name: try building
+      run: npm run build
+      
 #       uses: ideasonpurpose/docker-build@master
 #       with: 
 #         args: npm run build
