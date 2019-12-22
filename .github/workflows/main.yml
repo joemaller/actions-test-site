@@ -16,6 +16,11 @@ jobs:
 
     - name: docker-compose version
       run: docker-compose --version
+    
+    - name: Install stuff
+      run: | 
+        npm install
+        npm run composer
 
     - name: try building
       run: npm run build
