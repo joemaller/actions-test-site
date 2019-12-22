@@ -23,10 +23,14 @@ jobs:
         npm run composer
 
     - name: user?
-      run: whoami
+      run: | 
+        whoami
+        pwd
   
     - name: sudo user?
-      run: sudo whoami
+      run: |
+        sudo whoami
+        sudo pwd
       
     - name: env?
       run: env
