@@ -11,34 +11,29 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
       
-    - name: Run a one-line script
-      run: echo Hello, world! $(date "+%H:%M:%S")
+#     - name: Run a one-line script
+#       run: echo Hello, world! $(date "+%H:%M:%S")
 
-    - name: docker-compose version
-      run: docker-compose --version
+#     - name: docker-compose version
+#       run: docker-compose --version
     
 #     - name: Install stuff
 #       run: | 
 #         npm install
 #         npm run composer
 
-    - name: working dir
-      
+    - name: working dir stuff
       run: | 
         whoami
         pwd
         ls -la
+        mkdir -p wp-content/themes/iop-gip/dist/{js,css}
+        ls -la wp-content/themes/iop-gip
+        ls -la wp-content/themes/iop-gip/dist
   
-    - name: sudo user?
-      run: |
-        sudo whoami
-        sudo pwd
-      
-    - name: env?
-      run: env
   
-    - name: try building
-      run: sudo npm run build
+#     - name: try building
+#       run: sudo npm run build
       
 #       uses: ideasonpurpose/docker-build@master
 #       with: 
