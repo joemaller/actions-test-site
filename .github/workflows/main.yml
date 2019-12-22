@@ -14,10 +14,10 @@ jobs:
     - name: Run a one-line script
       run: echo Hello, world! $(date "+%H:%M:%S")
 
-#     - name: Try npm
-#       run: npm version
+    - name: docker-compose version
+      run: docker-compose --version
 
-    - name: try building
-      uses: ideasonpurpose/docker-build@master
-      with: 
-        args: npm run build
+#     - name: try building
+#       uses: ideasonpurpose/docker-build@master
+#       with: 
+#         args: npm run build
