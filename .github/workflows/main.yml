@@ -4,7 +4,6 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -14,51 +13,54 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
-    
+      - name: env
+        run: env
+
       - name: npm install cache
         id: npm-install
         uses: actions/cache@v1
         with:
           path: node_modules
           key: ${{ runner.os }}-node_modules
-    
+
       - name: npm install
         if: steps.npm-install.outputs.cache-hit != true
-        run: | 
+        run: |
           npm install
-      
+
       - name: Composer Install cache
         id: composer-install
         uses: actions/cache@v1
-        with: 
-          path: wp-content/themes/action-test/vendor   # TODO: This should not be hard-coded, get the slug
+        with:
+          path: wp-content/themes/action-test/vendor # TODO: This should not be hard-coded, get the slug
           key: ${{ runner.os }}-vendor
-        
+
       - name: Composer install
         if: steps.composer-install.outputs.cache-hit != true
         run: |
           npm run composer
 
       - name: working dir stuff
-        run: | 
-           echo $RUN_DATE
-           whoami
-           id
-           pwd
-           ls -la wp-content/themes/action-test/
-           chmod 0777 .
-           ls -la .
-#            chmod 0777 wp-content/themes/action-test/
-#           ls -la wp-content/themes/action-test/
+        run: |
+          echo $RUN_DATE
+          whoami
+          id
+          pwd
+          ls -la .
+          ls -la wp-content/themes/action-test/
+          chmod -R 0775 .
+          ls -la .
+          ls -la wp-content/themes/action-test/
+      #            chmod 0777 wp-content/themes/action-test/
+      #           ls -la wp-content/themes/action-test/
 
-  
       - name: try building
         run: sudo npm run build
-      
-    
-      - name: so we failed, what'd we get?
-        run: | 
-          ls -la wp-content/themes/action-test
+
+      # - name: so we failed, what'd we get?
+      #   run: |
+      #     ls -la wp-content/themes/action-test
+
 #       uses: ideasonpurpose/docker-build@master
-#       with: 
+#       with:
 #         args: npm run build
