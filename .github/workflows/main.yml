@@ -38,8 +38,8 @@ jobs:
         id
         pwd
         ls -la wp-content/themes/action-test/
-        chmod g+w wp-content/themes/action-test/
-        chmod g+w .
+        chmod 0777 wp-content/themes/action-test/
+        chmod 0777 .
         ls -la .
         ls -la wp-content/themes/action-test/
   
