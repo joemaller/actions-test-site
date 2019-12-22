@@ -63,6 +63,13 @@ jobs:
           sudo ls -la /var/lib/docker/image
           sudo ls -la /var/lib/docker/image/overlay2
 
+      - name: Docker image cache
+        id: docker-image
+        uses: actions/cache@v1
+        with:
+          path: /var/lib/docker/image
+          key: ${{ runner.os }}-docker-image
+
       - name: try building
         run: sudo npm run build
 
