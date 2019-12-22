@@ -16,27 +16,27 @@ jobs:
       - name: env
         run: env
 
-      - name: npm install cache
-        id: npm-install
-        uses: actions/cache@v1
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node_modules
+      # - name: npm install cache
+      #   id: npm-install
+      #   uses: actions/cache@v1
+      #   with:
+      #     path: node_modules
+      #     key: ${{ runner.os }}-node_modules
 
       - name: npm install
-        if: steps.npm-install.outputs.cache-hit != true
+        # if: steps.npm-install.outputs.cache-hit != true
         run: |
           npm install
 
-      - name: Composer Install cache
-        id: composer-install
-        uses: actions/cache@v1
-        with:
-          path: wp-content/themes/action-test/vendor # TODO: This should not be hard-coded, get the slug
-          key: ${{ runner.os }}-vendor
+      # - name: Composer Install cache
+      #   id: composer-install
+      #   uses: actions/cache@v1
+      #   with:
+      #     path: wp-content/themes/action-test/vendor # TODO: This should not be hard-coded, get the slug
+      #     key: ${{ runner.os }}-vendor
 
       - name: Composer install
-        if: steps.composer-install.outputs.cache-hit != true
+        # if: steps.composer-install.outputs.cache-hit != true
         run: |
           npm run composer
 
@@ -63,12 +63,12 @@ jobs:
           sudo ls -la /var/lib/docker/image
           sudo ls -la /var/lib/docker/image/overlay2
 
-      - name: Docker image cache
-        id: docker-image
-        uses: actions/cache@v1
-        with:
-          path: /var/lib/docker/image
-          key: ${{ runner.os }}-docker-image
+      # - name: Docker image cache
+      #   id: docker-image
+      #   uses: actions/cache@v1
+      #   with:
+      #     path: /var/lib/docker/image
+      #     key: ${{ runner.os }}-docker-image
 
       - name: try building
         run: sudo npm run build
