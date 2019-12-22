@@ -26,10 +26,9 @@ jobs:
       run: | 
         whoami
         pwd
-        ls -la
-        mkdir -p wp-content/themes/action-test/dist/{js,css}
-        ls -la wp-content/themes/action-test
-        ls -la wp-content/themes/action-test/dist
+        ls -la wp-content/themes/action-test/
+        chmod 0777 wp-content/themes/action-test/
+        ls -la wp-content/themes/action-test/
   
   
     - name: try building
