@@ -22,8 +22,17 @@ jobs:
         npm install
         npm run composer
 
-    - name: try building
-      run: npm run build
+    - name: user?
+      run: whoami
+  
+    - name: sudo user?
+      run: sudo whoami
+      
+    - name: env?
+      run: env
+  
+#     - name: try building
+#       run: npm run build
       
 #       uses: ideasonpurpose/docker-build@master
 #       with: 
