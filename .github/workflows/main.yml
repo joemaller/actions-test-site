@@ -59,7 +59,7 @@ jobs:
         run: |
           env
           chmod 0777 .
-          chmod 0777  wp-content/themes/${{ THEME_NAME }}/
+          chmod 0777  wp-content/themes/$THEME_NAME/
 
       # echo $RUN_DATE
       # whoami
