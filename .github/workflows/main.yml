@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Hello acton
         id: hello
-        uses: joemaller/managed-wordpress-deploy@v1
+        uses: joemaller/managed-wordpress-deploy@latest
         with:
           remote-host: gip7b70f58129a.ssh.wpengine.net
 
