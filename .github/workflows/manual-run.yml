@@ -9,6 +9,11 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      trigger:
+        description: 'Switch to use SHA instead of tags on manual builds'
+        required: false
+        default: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -25,6 +30,6 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         env: 
-          EVENT: ${{ toJSON(github.event) }}
+          TRIGGER: ${{ INPUT_TRIGGER }}
         run: |
-          echo "$EVENT"
+          echo "$TRIGGER"
