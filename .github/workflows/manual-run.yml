@@ -29,14 +29,20 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Run on Pull
-        if: github.event_name == "pull"
+        if: github.event_name == 'pull'
         run: |
           echo "${GITHUB_REF}"
           echo "${GITHUB_REF#refs/tags/v}"
+          
       - name: Run on workflow_dispatch
-        if: github.event_name == "workflow_dispatch"
+        if: github.event_name == 'workflow_dispatch'
         run: |
           echo "${GITHUB_SHA}"
           echo "${GITHUB_SHA:0:6}"
+      
+      - name: Dump context
+        run: |
+          echo "${{ github }}"
+        
         
 
