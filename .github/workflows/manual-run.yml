@@ -74,6 +74,7 @@ jobs:
         
       - name: Test s3
         run: |
+          aws --version
           aws s3 ls $S3_URI
           aws s3 ls $S3_URI/${REPO}
 
