@@ -34,7 +34,8 @@ jobs:
         run: |
           echo "$INPUTS"
           echo "${GITHUB_REF}"
-          echo "${{ toJSON( github.env ) }}"
-          echo  "${GITHUB_REF#refs/tags/v}"
+          echo "${{ toJSON( github ) }}"
+          echo  "${GITHUB_SHA:0:6}"
+          echo  "${GITHUB_SHA:6}"
         
 
