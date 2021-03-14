@@ -55,7 +55,7 @@ jobs:
         run: |
           echo "NO TAG, inverse match"
 
-      - name: Run when there's no tag (no brackets)
+      - name: "Run when there's no tag (no brackets)"
         if: !startsWith(github.ref, 'refs/tags')
         run: |
           echo "NO TAG, inverse match"
