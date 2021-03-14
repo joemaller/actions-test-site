@@ -33,7 +33,7 @@ jobs:
           INPUTS: ${{ toJSON( github.event.inputs) }}
         run: |
           echo "$INPUTS"
-          echo "${GITHUB_REF}
+          echo "${GITHUB_REF}"
           echo "${{ toJSON( github.env ) }}"
           echo  "${GITHUB_REF#refs/tags/v}"
         
