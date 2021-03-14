@@ -15,6 +15,12 @@ on:
         required: false
         default: true
 
+env:
+  S3_URI: s3://ideasonpurpose-wp-updates
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   
@@ -66,4 +72,9 @@ jobs:
           echo "${{ toJSON(github) }}"
         
         
+      - name: Test s3
+        run: |
+          aws s3 ls $S3_URI
+          aws s3 ls $S3_URI/${REPO}
+
 
