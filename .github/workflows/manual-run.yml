@@ -42,7 +42,8 @@ jobs:
       
       - name: Dump context
         run: |
-          echo "${{ github }}"
+          echo "${github.event_name}"
+          echo "${{toJSON(github) }}"
         
         
 
