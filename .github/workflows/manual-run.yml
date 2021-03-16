@@ -44,8 +44,8 @@ jobs:
         run: |
           curl -s http://api.wordpress.org/core/stable-check/1.0/ | jq 'to_entries[] | {tested: select(.value == "latest").key}' > ${{ runner.temp }}/tested.json
           cat package.json| jq '{homepage: .homepage}' > ${{ runner.temp }}/homempage.json
-          jq -s '.[0] * .[1]'  ${{ runner.temp }}/homepage.json ${{ runner.temp }}/tested.json > assets/metadata.json
-          jq < assets/metadata.json
+          jq -s '.[0] * .[1]'  ${{ runner.temp }}/homepage.json ${{ runner.temp }}/tested.json > metadata.json
+          jq < metadata.json
 
 
       # Runs a set of commands using the runners shell
