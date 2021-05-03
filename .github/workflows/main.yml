@@ -1,20 +1,20 @@
-name: Builder
+name: Release Maker
 
 on: [push]
 
 jobs:
-  test-action:
-    runs-on: ubuntu-latest
-    name: Testing the action I just made
-    steps:
-      - name: Hello acton
-        id: hello
-        uses: joemaller/managed-wordpress-deploy@master
-        with:
-          remote-host: gip7b70f58129a.ssh.wpengine.net
+  # test-action:
+  # runs-on: ubuntu-latest
+  # name: Testing the action I just made
+  # steps:
+  #   - name: Hello acton
+  #     id: hello
+  #     uses: joemaller/managed-wordpress-deploy@master
+  #     with:
+  #       remote-host: gip7b70f58129a.ssh.wpengine.net
 
-      - name: followup
-        run: echo "Here's the output ${{ steps.hello.outputs.time }}"
+  #   - name: followup
+  #     run: echo "Here's the output ${{ steps.hello.outputs.time }}"
 
   build:
     runs-on: ubuntu-latest
@@ -31,73 +31,23 @@ jobs:
       - name: env
         run: env
 
-      # - name: npm install cache
-      #   id: npm-install
-      #   uses: actions/cache@v1
-      #   with:
-      #     path: node_modules
-      #     key: ${{ runner.os }}-node_modules
-
       - name: npm install
-        # if: steps.npm-install.outputs.cache-hit != true
+        run: npm ci
+
+      - name: Zip it up
+        id: zip
+        run: echo ${{ steps.zip.name }}
+      
+      - name: Only run for tags
+        if: contains(github.ref, 'refs/tags/')
+        run: echo 'This must be a tag'
+
+      - name: Test s3
         run: |
-          npm install
+          aws --version
+          aws s3 ls $S3_URI
 
-      # - name: Composer Install cache
-      #   id: composer-install
-      #   uses: actions/cache@v1
-      #   with:
-      #     path: wp-content/themes/action-test/vendor # TODO: This should not be hard-coded, get the slug
-      #     key: ${{ runner.os }}-vendor
-
-      - name: Composer install
-        # if: steps.composer-install.outputs.cache-hit != true
+      - name: Test gh
         run: |
-          npm run composer
+          gh --version
 
-      - name: set permissions so build can create directories
-        run: |
-          env
-          chmod 0777 .
-          chmod 0777  wp-content/themes/$THEME_NAME/
-
-      # echo $RUN_DATE
-      # whoami
-      # id
-      # pwd
-      # ls -la .
-      # ls -la wp-content/themes/action-test/
-      # chmod 0777 .
-      # chmod 0777  wp-content/themes/action-test/
-      # ls -la .
-      # ls -la wp-content/themes/action-test/
-
-      # - name: Docker?
-      #   run: |
-      #     which jq
-      #     sudo ls -la /var/lib/docker
-      #     sudo ls -la /var/lib/docker/image
-      #     sudo ls -la /var/lib/docker/image/overlay2
-
-      # - name: Docker image cache
-      #   id: docker-image
-      #   uses: actions/cache@v1
-      #   with:
-      #     path: /var/lib/docker/image
-      #     key: ${{ runner.os }}-docker-image
-
-      - name: Build site for production
-        run: sudo npm run build
-
-      - name: Do we have rsync?
-        run: rsync --version
-
-      # - name: Rsync backup existing theme
-      #   run: ssh ${{ SSH_USER }}@${{ SSH_HOST }} -i ~/.ssh/id_rsa_wpengine -t "rsync -av ~/sites/gip7b70f58129a/wp-content/themes/iop-gip-0_0_66 ~/sites/gip7b70f58129a/wp-content/themes/iop-gip-b2"
-
-      # - name: so we failed, what'd we get?
-      #   run: |
-      #     ls -la wp-content/themes/action-test
-#       uses: ideasonpurpose/docker-build@master
-#       with:
-#         args: npm run build
