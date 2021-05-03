@@ -23,13 +23,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
-      - name: Set environment vars
+      # - name: Set environment vars
+      #   run: |
+      #     echo  "RUN_DATE=$(date "+%Y%m%dT%H%M")" >> $GITHUB_ENV
+      #     echo  "THEME_NAME=$(jq '.name' package.json)" >> $GITHUB_ENV
+
+      - name: Set up REPO and TAG (hash) environment vars
         run: |
-          echo  "RUN_DATE=$(date "+%Y%m%dT%H%M")" >> $GITHUB_ENV
-          echo  "THEME_NAME=$(jq '.name' package.json)" >> $GITHUB_ENV
-        # echo "::set-env name=RUN_DATE::$(date "+%Y%m%dT%H%M")"
-        # echo "::set-env name=THEME_NAME::$(jq '.name' package.json)"
-          
+          echo  "REPO=wp-content/themes/${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
+          echo "TAG=${GITHUB_SHA:0:6}" >> $GITHUB_ENV
+
+      - name: This run was triggered by a version tag, reset the $TAG variable to the tag name
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          echo  "TAG=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
 
       - name: env
         run: env
@@ -40,7 +47,13 @@ jobs:
       - name: Zip it up
         id: zip
         run: echo ${{ steps.zip.name }}
-      
+
+      - name: Create Zip Archive
+        run: |
+          cd ../
+          rm -rf ${REPO}.zip
+          zip -r ${REPO}.zip ${REPO} -i ${REPO}/index.php ${REPO}/lib/\* ${REPO}/vendor/\* ${REPO}/readme.txt
+
       - name: Only run for tags
         if: contains(github.ref, 'refs/tags/')
         run: echo 'This must be a tag'
@@ -48,9 +61,7 @@ jobs:
       - name: Test s3
         run: |
           aws --version
-          aws s3 ls $S3_URI
 
       - name: Test gh
         run: |
           gh --version
-
