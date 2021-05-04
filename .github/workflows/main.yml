@@ -26,11 +26,11 @@ jobs:
       # - name: Set environment vars
       #   run: |
       #     echo  "RUN_DATE=$(date "+%Y%m%dT%H%M")" >> $GITHUB_ENV
-      #     echo  "THEME_NAME=$(jq '.name' package.json)" >> $GITHUB_ENV
 
       - name: Set up REPO and TAG (hash) environment vars
         run: |
-          echo  "REPO=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
+          echo "THEME_NAME=$(jq '.name' package.json)" >> $GITHUB_ENV
+          echo "REPO=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
           echo "TAG=${GITHUB_SHA:0:6}" >> $GITHUB_ENV
 
       - name: This run was triggered by a version tag, reset the $TAG variable to the tag name
@@ -44,22 +44,18 @@ jobs:
       - name: npm install
         run: npm ci
 
-      - name: Zip it up
-        id: zip
-        run: echo ${{ steps.zip.name }}
-
       - name: Create Zip Archive
         run: |
-          rm -rf ${REPO}.zip
-          zip -r ${REPO}.zip ${REPO} -i wp-content/themes/${REPO}/index.php wp-content/themes/${REPO}/lib/\* ${REPO}/vendor/\*
+          rm -rf ${THEME_NAME}.zip
+          zip -r ${THEME_NAME}.zip wp-content/themes/${THEME_NAME} -i wp-content/themes/${THEME_NAME}/index.php wp-content/themes/${THEME_NAME}/lib/\*
 
       - name: Only run for tags
         if: contains(github.ref, 'refs/tags/')
         run: echo 'This must be a tag'
 
-      - name: Test s3
+      - name: Test jq
         run: |
-          aws --version
+          jq --version
 
       - name: Test gh
         run: |
