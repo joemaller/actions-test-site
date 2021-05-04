@@ -54,6 +54,8 @@ jobs:
 
       - name: Only run for tags
         if: contains(github.ref, 'refs/tags/')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo 'This must be a tag'
           gh release create $TAG ${THEME_NAME}.zip
