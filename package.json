@@ -33,7 +33,6 @@
     "@prettier/plugin-php": "^0.16.2",
     "dotenv": "^8.2.0",
     "prettier": "^2.2.1",
-    "prettier-stylelint": "^0.4.2",
     "stylelint": "^13.13.1",
     "version-everything": "^0.6.3"
   },
