@@ -30,7 +30,7 @@ jobs:
 
       - name: Set up REPO and TAG (hash) environment vars
         run: |
-          echo  "REPO=wp-content/themes/${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
+          echo  "REPO=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
           echo "TAG=${GITHUB_SHA:0:6}" >> $GITHUB_ENV
 
       - name: This run was triggered by a version tag, reset the $TAG variable to the tag name
@@ -50,9 +50,8 @@ jobs:
 
       - name: Create Zip Archive
         run: |
-          cd ../
           rm -rf ${REPO}.zip
-          zip -r ${REPO}.zip ${REPO} -i ${REPO}/index.php ${REPO}/lib/\* ${REPO}/vendor/\* ${REPO}/readme.txt
+          zip -r ${REPO}.zip ${REPO} -i wp-content/themes/${REPO}/index.php wp-content/themes/${REPO}/lib/\* ${REPO}/vendor/\*
 
       - name: Only run for tags
         if: contains(github.ref, 'refs/tags/')
