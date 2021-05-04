@@ -54,7 +54,9 @@ jobs:
 
       - name: Only run for tags
         if: contains(github.ref, 'refs/tags/')
-        run: echo 'This must be a tag'
+        run: |
+          echo 'This must be a tag'
+          gh release create $TAG ${THEME_NAME}.zip
 
       - name: Test jq
         run: |
