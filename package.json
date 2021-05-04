@@ -28,7 +28,6 @@
     "start": "npm run docker:start",
     "poststart": "npm run shutdown",
     "version": "version-everything && git add -u",
-    "postversion": "npm run build",
     "webgrind": "docker-compose -f docker-compose.yml -f docker-compose-util.yml run --rm -p 9001:80 webgrind"
   },
   "devDependencies": {
