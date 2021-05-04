@@ -29,7 +29,7 @@ jobs:
 
       - name: Set up REPO and TAG (hash) environment vars
         run: |
-          echo "THEME_NAME=$(jq '.name' package.json)" >> $GITHUB_ENV
+          echo "THEME_NAME=$(jq -r '.name' package.json)" >> $GITHUB_ENV
           echo "REPO=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
           echo "TAG=${GITHUB_SHA:0:6}" >> $GITHUB_ENV
 
