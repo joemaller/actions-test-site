@@ -2,8 +2,8 @@ name: Release Maker
 
 on: 
   push: 
-    branches: "*"
     tags: ["v*"]
+    branches: "*"
 
 jobs:
   # test-action:
