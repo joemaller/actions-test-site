@@ -67,3 +67,14 @@ jobs:
       - name: Test gh
         run: |
           gh --version
+  
+      - name: Store Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ REPO }}
+          path: |
+            wp-content/themes/action-test/screenshot.png
+            wp-content/themes/action-test/src/*
+            README.md
+          retention-days: 2
+
